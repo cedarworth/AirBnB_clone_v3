@@ -1,4 +1,5 @@
 # 0x04. AirBnB clone - Web framework
+<<<<<<< HEAD
 
 ## Learning Objectives
 - What is a Web Framework
@@ -243,3 +244,5 @@
 
 - templates/100-hbnb.html - template for task 12
 - web_flask/static/ - static files for display
+=======
+>>>>>>> Mangoyi_Junior
