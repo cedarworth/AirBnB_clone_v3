@@ -1,35 +1,27 @@
 #!/usr/bin/python3
-""" holds class State"""
-import models
+""" State Module for HBNB project """
 from models.base_model import BaseModel, Base
-from os import getenv
-import sqlalchemy
-from sqlalchemy import Column, String
+from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
+import models
+from models.city import City
+import os
 
 
 class State(BaseModel, Base):
-    """Representation of state """
-    if getenv('HBNB_TYPE_STORAGE') == 'db':
-        __tablename__ = 'states'
-        name = Column(String(128),
-                      nullable=False)
-        cities = relationship("City", cascade="all, delete",
-                              backref="states")
-    else:
-        name = ""
+    """ State class """
+    __tablename__ = "states"
+    name = Column(String(128), nullable=False)
+    cities = relationship("City", cascade="delete", backref="state")
 
-    def __init__(self, *args, **kwargs):
-        """initializes state"""
-        super().__init__(*args, **kwargs)
-
-    if getenv('HBNB_TYPE_STORAGE') != 'db':
+    if os.getenv('HBNB_TYPE_STORAGE') != "db":
         @property
         def cities(self):
-            """fs getter attribute that returns City instances"""
-            values_city = models.storage.all("City").values()
-            list_city = []
-            for city in values_city:
+            """ cities getter attribute """
+            cit_lis = []
+            all_cit = models.storage.all(City)
+            for city in all_cit.values():  # change .items() to values() as it
+                # returns an obj that contains values of a dictionary as a list
                 if city.state_id == self.id:
-                    list_city.append(city)
-            return list_city
+                    cit_lis.append(city)
+            return cit_lis
