@@ -1,24 +1,4 @@
 #!/usr/bin/python3
-<<<<<<< HEAD
-""" """
-from tests.test_models.test_base_model import test_basemodel
-from models.amenity import Amenity
-
-
-class test_Amenity(test_basemodel):
-    """ """
-
-    def __init__(self, *args, **kwargs):
-        """ """
-        super().__init__(*args, **kwargs)
-        self.name = "Amenity"
-        self.value = Amenity
-
-    def test_name2(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.name), str)
-=======
 """
 Contains the TestAmenityDocs classes
 """
@@ -124,4 +104,3 @@ class TestAmenity(unittest.TestCase):
         amenity = Amenity()
         string = "[Amenity] ({}) {}".format(amenity.id, amenity.__dict__)
         self.assertEqual(string, str(amenity))
->>>>>>> Mangoyi_Junior

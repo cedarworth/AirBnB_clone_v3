@@ -1,13 +1,4 @@
 footer {
-<<<<<<< HEAD
-	position: fixed;
-	bottom: 0;
-	background-color: #00FF00;
-	height: 60px;
-	width: 100%;
-	text-align: center;
-	line-height: 30px;
-=======
     position: fixed;
     bottom: 0;
     width: 100%;
@@ -18,5 +9,4 @@ footer {
 footer p {
     text-align: center;
     margin: 20px;
->>>>>>> Mangoyi_Junior
 }

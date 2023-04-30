@@ -1,29 +1,4 @@
 #!/usr/bin/python3
-<<<<<<< HEAD
-""" """
-from tests.test_models.test_base_model import test_basemodel
-from models.city import City
-
-
-class test_City(test_basemodel):
-    """ """
-
-    def __init__(self, *args, **kwargs):
-        """ """
-        super().__init__(*args, **kwargs)
-        self.name = "City"
-        self.value = City
-
-    def test_state_id(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.state_id), str)
-
-    def test_name(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.name), str)
-=======
 """
 Contains the TestCityDocs classes
 """
@@ -137,4 +112,3 @@ class TestCity(unittest.TestCase):
         city = City()
         string = "[City] ({}) {}".format(city.id, city.__dict__)
         self.assertEqual(string, str(city))
->>>>>>> Mangoyi_Junior

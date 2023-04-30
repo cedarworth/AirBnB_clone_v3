@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-This directory implements webpage design.
-=======
 # 0x01. AirBnB clone - Web static
 At the end of this project you are expected to be able to explain to anyone, without the help of Google:
 * What is HTML?
@@ -16,4 +13,3 @@ At the end of this project you are expected to be able to explain to anyone, wit
 * What is a selector?
 * How do you compute CSS Specificity Value?
 * What are Box properties in CSS?
->>>>>>> Mangoyi_Junior
