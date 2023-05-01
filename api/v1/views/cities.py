@@ -1,65 +1,77 @@
 #!/usr/bin/python3
-"""cities"""
+"""cities.py"""
+
 from api.v1.views import app_views
-from flask import jsonify, Blueprint, make_response, abort, request
+from flask import abort, jsonify, make_response, request
 from models import storage
 from models.city import City
 from models.state import State
-from models.base_model import BaseModel
 
 
-@app_views.route('/states/<state_id>/cities', methods=['GET', 'POST'],
+@app_views.route('/states/<string:state_id>/cities', methods=['GET'],
                  strict_slashes=False)
-def all_cities(state_id):
-    """list all cities in state"""
-    output = []
-    state = storage.get(State, state_id)
+def get_cities(state_id):
+    """get city information for all cities in a specified state"""
+    state = storage.get("State", state_id)
     if state is None:
         abort(404)
-    if request.method == 'GET':
-        for city in state.cities:
-            output.append(city.to_dict())
-        return (jsonify(output))
-    if request.method == 'POST':
-        data = request.get_json()
-        if not request.is_json:
-            abort(400, description="Not a JSON")
-        if 'name' not in request.json:
-            abort(400, description="Missing name")
-        data['state_id'] = state_id
-        city = City(**data)
-        city.save()
-        return (jsonify(city.to_dict()), 201)
+    cities = []
+    for city in state.cities:
+        cities.append(city.to_dict())
+    return jsonify(cities)
 
 
-@app_views.route('/cities/<city_id>', methods=['GET', 'PUT'],
+@app_views.route('/cities/<string:city_id>', methods=['GET'],
                  strict_slashes=False)
-def a_city(city_id):
-    """list a city by id"""
-    city = storage.get(City, city_id)
+def get_city(city_id):
+    """get city information for specified city"""
+    city = storage.get("City", city_id)
     if city is None:
         abort(404)
-    if request.method == 'GET':
-        output = city.to_dict()
-        return (jsonify(output))
-    if request.method == 'PUT':
-        data = request.get_json()
-        if not request.is_json:
-            abort(400, description="Not a JSON")
-        for key, value in data.items():
-            setattr(city, key, value)
-        city.save()
-        return (jsonify(city.to_dict()), 200)
+    return jsonify(city.to_dict())
 
 
-@app_views.route('/cities/<city_id>', methods=["GET", "DELETE"],
+@app_views.route('/cities/<string:city_id>', methods=['DELETE'],
                  strict_slashes=False)
-def del_a_city(city_id):
-    """ delete one unique city object """
-    city = storage.get(City, city_id)
+def delete_city(city_id):
+    """deletes a city based on its city_id"""
+    city = storage.get("City", city_id)
     if city is None:
         abort(404)
-    storage.delete(city)
+    city.delete()
     storage.save()
-    result = make_response(jsonify({}), 200)
-    return result
+    return (jsonify({}))
+
+
+@app_views.route('/states/<string:state_id>/cities/', methods=['POST'],
+                 strict_slashes=False)
+def post_city(state_id):
+    """create a new city"""
+    state = storage.get("State", state_id)
+    if state is None:
+        abort(404)
+    if not request.get_json():
+        return make_response(jsonify({'error': 'Not a JSON'}), 400)
+    if 'name' not in request.get_json():
+        return make_response(jsonify({'error': 'Missing name'}), 400)
+    kwargs = request.get_json()
+    kwargs['state_id'] = state_id
+    city = City(**kwargs)
+    city.save()
+    return make_response(jsonify(city.to_dict()), 201)
+
+
+@app_views.route('/cities/<string:city_id>', methods=['PUT'],
+                 strict_slashes=False)
+def put_city(city_id):
+    """update a city"""
+    city = storage.get("City", city_id)
+    if city is None:
+        abort(404)
+    if not request.get_json():
+        return make_response(jsonify({'error': 'Not a JSON'}), 400)
+    for attr, val in request.get_json().items():
+        if attr not in ['id', 'state_id', 'created_at', 'updated_at']:
+            setattr(city, attr, val)
+    city.save()
+    return jsonify(city.to_dict())
